@@ -13,6 +13,7 @@ describe('Utils test suite', () => {
     expect(actual).toBe(expected);
   });
 
+  // Multiple test structures
   describe('getStringInfo for arg My-String should', () => {
     test('return right length', () => {
       const actual = getStringInfo('My-String');
@@ -23,7 +24,6 @@ describe('Utils test suite', () => {
 
     test('return right lowercase', () => {
       const actual = getStringInfo('My-String');
-
       expect(actual.lowerCase).toBe('my-string');
     });
 

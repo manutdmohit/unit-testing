@@ -5,22 +5,39 @@ describe('Utils test suite', () => {
     let sut: StringUtils;
 
     beforeEach(() => {
-      console.log('before');
-
       sut = new StringUtils();
     });
 
-    afterEach(() => {
-      // clearing mocks
-      console.log('After');
-    });
-
-    it('should return correct upperCase', () => {
+    it.only('should return correct upperCase', () => {
       const actual = sut.toUpperCase('abc');
 
-      console.log('actual');
-
       expect(actual).toBe('ABC');
+    });
+
+    it('should throw error on invalid argument - function', () => {
+      function expectError() {
+        const actual = sut.toUpperCase('');
+      }
+
+      expect(expectError).toThrow();
+      expect(expectError).toThrowError('Invalid argument!');
+    });
+
+    it('should throw error on invalid argument - arrow function', () => {
+      expect(() => sut.toUpperCase('')).toThrowError('Invalid argument!');
+    });
+
+    it.only('should throw error on invalid argument -try catch block', (done) => {
+      try {
+        sut.toUpperCase('');
+
+        done('GetStringInfo should throw error for invalid arg!');
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error).toHaveProperty('message', 'Invalid argument!');
+
+        done();
+      }
     });
   });
 
@@ -37,7 +54,7 @@ describe('Utils test suite', () => {
   });
 
   // Parameterized Tests
-  describe.only('ToUpperCase examples', () => {
+  describe('ToUpperCase examples', () => {
     it.each([
       {
         input: 'abc',

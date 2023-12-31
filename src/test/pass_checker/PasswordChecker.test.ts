@@ -1,4 +1,7 @@
-import { PasswordChecker } from '../../app/pass_checker/PasswordChecker';
+import {
+  PasswordChecker,
+  PasswordErrors,
+} from '../../app/pass_checker/PasswordChecker';
 
 describe('PasswordChecker test suite', () => {
   let sut: PasswordChecker;
@@ -10,36 +13,46 @@ describe('PasswordChecker test suite', () => {
   it('should return password with less than 8 chars is invalid', () => {
     const actual = sut.checkPassword('1234567');
 
-    expect(actual).toBe(false);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.SHORT);
   });
 
   it('should return password with more than 8 or more chars is ok', () => {
-    const actual = sut.checkPassword('12345678Aa');
+    const actual = sut.checkPassword('12345678');
 
-    expect(actual).toBe(true);
+    expect(actual.reasons).not.toContain(PasswordErrors.SHORT);
   });
 
   it('should return password with no upper case letter is invalid', () => {
-    const actual = sut.checkPassword('1234abcd');
+    const actual = sut.checkPassword('abcd');
 
-    expect(actual).toBe(false);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.NO_UPPER_CASE);
   });
 
   it('should return password with upper case letter is valid', () => {
-    const actual = sut.checkPassword('1234abcdA');
+    const actual = sut.checkPassword('abcD');
 
-    expect(actual).toBe(true);
+    expect(actual.reasons).not.toContain(PasswordErrors.NO_UPPER_CASE);
   });
 
-  it('should return password with upper case letter is valid', () => {
-    const actual = sut.checkPassword('1234abcdA');
+  it('should return password with no lower case letter is invalid', () => {
+    const actual = sut.checkPassword('ABCD');
 
-    expect(actual).toBe(true);
+    expect(actual.valid).toBe(false);
+    expect(actual.reasons).toContain(PasswordErrors.NO_LOWER_CASE);
   });
 
-  it('should return password with no lower case letter is valid', () => {
-    const actual = sut.checkPassword('1234ABCD');
+  it('should return password with lower case letter is valid', () => {
+    const actual = sut.checkPassword('ABCDa');
 
-    expect(actual).toBe(false);
+    expect(actual.reasons).not.toContain(PasswordErrors.NO_LOWER_CASE);
+  });
+
+  it('should return complex password is valid', () => {
+    const actual = sut.checkPassword('1234ABCDefgh');
+
+    expect(actual.valid).toBe(true);
+    expect(actual.reasons).toHaveLength(0);
   });
 });

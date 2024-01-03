@@ -2,6 +2,7 @@ export enum PasswordErrors {
   SHORT = 'Password is too short!',
   NO_UPPER_CASE = 'Upper case letter required!',
   NO_LOWER_CASE = 'Lower case letter required!',
+  NO_NUMBER = 'At least one number required',
 }
 
 export interface CheckResult {
@@ -13,19 +14,54 @@ export class PasswordChecker {
   public checkPassword(password: string): CheckResult {
     const reasons: PasswordErrors[] = [];
 
-    if (password.length < 8) {
-      reasons.push(PasswordErrors.SHORT);
-    }
-    if (password == password.toLowerCase()) {
-      reasons.push(PasswordErrors.NO_UPPER_CASE);
-    }
-    if (password == password.toUpperCase()) {
-      reasons.push(PasswordErrors.NO_LOWER_CASE);
-    }
+    this.checkForLength(password, reasons);
+
+    this.CheckForLowerCase(password, reasons);
+
+    this.CheckForUpperCase(password, reasons);
 
     return {
       valid: reasons.length ? false : true,
       reasons: reasons,
     };
+  }
+
+  public checkAdminPassword(password: string): CheckResult {
+    const basicCheck = this.checkPassword(password);
+
+    this.CheckForNumber(password, basicCheck.reasons);
+
+    console.log(basicCheck.reasons);
+
+    return {
+      valid: basicCheck.reasons.length ? false : true,
+      reasons: basicCheck.reasons,
+    };
+  }
+
+  private CheckForNumber(password: string, reasons: PasswordErrors[]) {
+    const hasNumber = /\d/;
+
+    if (!hasNumber.test(password)) {
+      reasons.push(PasswordErrors.NO_NUMBER);
+    }
+  }
+
+  private checkForLength(password: string, reasons: PasswordErrors[]) {
+    if (password.length < 8) {
+      reasons.push(PasswordErrors.SHORT);
+    }
+  }
+
+  private CheckForLowerCase(password: string, reasons: PasswordErrors[]) {
+    if (password === password.toLowerCase()) {
+      reasons.push(PasswordErrors.NO_UPPER_CASE);
+    }
+  }
+
+  private CheckForUpperCase(password: string, reasons: PasswordErrors[]) {
+    if (password === password.toUpperCase()) {
+      reasons.push(PasswordErrors.NO_LOWER_CASE);
+    }
   }
 }

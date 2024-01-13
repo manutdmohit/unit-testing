@@ -4,16 +4,16 @@ import {
 } from '../../app/doubles/OtherUtils';
 
 describe('OtherUtils test suite', () => {
-  // jest mock
-
-  const callBackMock = jest.fn(); // This creates mock
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe.only('Tracking callbacks with Jest mocks', () => {
-    it('calls callback for invalid argument -track calls', () => {
+    // jest mock
+
+    const callBackMock = jest.fn(); // This creates mock
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('calls callback for invalid argument - track calls', () => {
       const actual = toUpperCaseWithCb('', callBackMock);
       expect(actual).toBeUndefined;
 
@@ -21,7 +21,7 @@ describe('OtherUtils test suite', () => {
       expect(callBackMock).toHaveBeenCalledTimes(1);
     });
 
-    it('calls callback for invalid argument -track calls', () => {
+    it('calls callback for valid argument - track calls', () => {
       const actual = toUpperCaseWithCb('abc', callBackMock);
       expect(actual).toBe('ABC');
 

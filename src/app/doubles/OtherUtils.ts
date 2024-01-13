@@ -9,6 +9,7 @@ export type stringInfo = {
 type LoggerServiceCallBack = (arg: string) => void;
 
 // stubs
+/* istanbul ignore next */
 export function calculateComplexity(stringInfo: stringInfo) {
   return Object.keys(stringInfo.extraInfo).length * stringInfo.length;
 }

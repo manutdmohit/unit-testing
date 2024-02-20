@@ -48,7 +48,12 @@ describe('Server test suite', () => {
     jest.clearAllMocks();
   });
 
-  it('should work by now', () => {
-    sut.startServer();
+  it('should start the server on port 800', async () => {
+    await sut.startServer();
+
+    expect(serverMock.listen).toHaveBeenCalledWith(800);
+    expect(responseMock.end).toHaveBeenCalled();
   });
 });
+
+// Prototype Testing, only available for Class

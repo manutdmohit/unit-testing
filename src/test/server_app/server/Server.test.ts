@@ -40,8 +40,8 @@ describe('Server test suite', () => {
   beforeEach(() => {
     sut = new Server();
 
-    expect(Authorizer).toBeCalledTimes(1);
-    expect(ReservationsDataAccess).toBeCalledTimes(1);
+    expect(Authorizer).toHaveBeenCalledTimes(1);
+    expect(ReservationsDataAccess).toHaveBeenCalledTimes(1);
   });
 
   afterEach(() => {
